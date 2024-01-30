@@ -19,35 +19,46 @@ function nth
 */
 
 
-function prepend(list, elem) {
-  for (let i = 0; i != list.length; i++) {
-    console.log(i)
+function prepend(elem, list) { // return new list
+  let arr = listToArray(list);
+  if (arr.length > 1) {
+    for (let i = 0; i != arr.length; i++) {
+      arr[i + 1] = arr[i]
+    }
+  } else if (arr.length == 1) {
+    arr[1] = arr[0]
   }
+  arr[0] = elem;
+  return arrayToList(arr)
 }
 
-function nth() {
-
+function nth(list, x) { // return #
+  return listToArray(list)[x]
 }
 
 function arrayToList(arr) {
-  if (arr.length > 1) {
-      
+  if (arr.length >= 1) {
     var list = {}
-
+    let cList = list;
     for (let i = 0; i != arr.length; i++) {
-      cVal = arr[i];
-      cRest = {value: arr[i]};
-      cVal = cRest.value;
-      cRest = cRest.rest
+      cList.value = arr[i];
+      cList.rest = { value: arr[i + 1] };
+      cList = cList.rest;
     }
-
   }
-
-  console.log(list)
+  return list
 }
 
-function listToArray(list, arr) {
-
+function listToArray(list) {
+  let arr = [];
+  let isP, cList = list;
+  do {
+    if (!cList || !cList.value) break;
+    arr.push(cList.value);
+    cList = cList.rest
+    isP = true;
+  } while (isP);
+  return arr
 }
 
 
@@ -56,11 +67,11 @@ function listToArray(list, arr) {
 console.log(arrayToList([10, 20]));
 // → {value: 10, rest: {value: 20, rest: null}}
 
-//console.log(listToArray(arrayToList([10, 20, 30])));
+console.log(listToArray(arrayToList([10, 20, 30])));
 // → [10, 20, 30]
 
-//console.log(prepend(10, prepend(20, null)));
+console.log(prepend(10, prepend(20, null)));
 // → {value: 10, rest: {value: 20, rest: null}}
 
-//console.log(nth(arrayToList([10, 20, 30]), 1));
+console.log(nth(arrayToList([10, 20, 30]), 1));
 // → 20
